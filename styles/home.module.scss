@@ -1,0 +1,22 @@
+@import '~modularscale-sass/stylesheets/modularscale';
+
+$modularscale: (
+  base: 14px,
+  ratio: 1.25
+);
+
+.home {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  .message {
+    font-family: 'Satoshi';
+    font-weight: 600;
+    font-size: ms(4);
+    color: var(--gray-200);
+  }
+}
