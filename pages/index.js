@@ -1,6 +1,29 @@
 import Head from 'next/head';
 import Image from 'next/image';
+import Link from 'next/link';
 import styles from '../styles/home.module.scss';
+
+const ARTIST_PAGES = ['who', 'why', 'how'];
+const ART_PAGES = ['apron', 'covid19india.org'];
+
+function List({heading, pages}) {
+  return (
+    <div className={styles.list}>
+      <div className={styles.heading}>{heading}</div>
+
+      <div className={styles.pages}>
+        {pages.map((page) => (
+          <Link href={`/${page}`}>
+            <a className={styles.page}>
+              <div className={styles.name}>{page}</div>
+              <div className={styles.description}>{page}</div>
+            </a>
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default function Home() {
   return (
@@ -11,7 +34,8 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className={styles.message}>Hello World!</div>
+      <List {...{heading: 'The Artist', pages: ARTIST_PAGES}} />
+      <List {...{heading: 'The Art', pages: ART_PAGES}} />
     </div>
   );
 }

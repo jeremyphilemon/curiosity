@@ -1,0 +1,32 @@
+@import '~modularscale-sass/stylesheets/modularscale';
+
+$modularscale: (
+  base: 14px,
+  ratio: 1.25
+);
+
+.navbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-bottom: solid 2px var(--gray-200);
+  font-size: ms(0);
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: ms(5);
+
+  .breadcrumbs {
+    .crumb {
+      color: var(--gray-600);
+    }
+
+    .slash {
+      margin-left: ms(0);
+      margin-right: ms(0);
+    }
+  }
+
+  .colophon {
+    color: var(--gray-400);
+  }
+}
