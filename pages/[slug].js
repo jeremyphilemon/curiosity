@@ -61,6 +61,11 @@ function Page({data}) {
           return <Video {...{block}} />;
         }
 
+        if (block.type === 'quote') {
+          const text = block.quote.rich_text[0]?.plain_text;
+          return <div className={styles.quote}>{text}</div>;
+        }
+
         return null;
       })}
     </div>

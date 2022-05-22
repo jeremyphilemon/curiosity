@@ -30,7 +30,19 @@ $modularscale: (
 		color: var(--blue-500);
 		line-height: 150%;
 		font-size: ms(0);
-		margin-bottom: -#{ms(4)};
+		margin-bottom: -#{ms(2)};
+	}
+
+	.quote {
+		max-width: ms(18);
+		margin-left: auto;
+		margin-right: auto;
+	  padding: ms(5);
+	  padding-bottom: 0;
+		font-weight: 900;
+		color: var(--gray-300);
+		line-height: 150%;
+		font-size: ms(4);
 	}
 
 	.image_wrapper {
