@@ -11,18 +11,36 @@ $modularscale: (
   justify-content: space-between;
   border-bottom: solid 2px var(--gray-200);
   font-size: ms(0);
-  font-weight: 600;
-  text-transform: uppercase;
+  font-weight: 700;
   padding: ms(5);
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 999;
 
   .breadcrumbs {
     .crumb {
-      color: var(--gray-600);
+      color: var(--gray-400);
+      padding: ms(-4);
+      border-radius: 4px;
+
+      &:hover {
+        background: var(--gray-100);
+      }
+
+      &:last-child {
+        color: var(--pink-500);
+
+        &:hover {
+          background: var(--pink-100);
+        }
+      }
     }
 
     .slash {
       margin-left: ms(0);
       margin-right: ms(0);
+      color: var(--gray-400);
     }
   }
 

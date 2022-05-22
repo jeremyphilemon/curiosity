@@ -1,31 +1,61 @@
 import Head from 'next/head';
-import Image from 'next/image';
 import Link from 'next/link';
+import useSWR from 'swr';
+import {useMemo, useState} from 'react';
+import Image from 'next/image';
 import styles from '../styles/home.module.scss';
+import {slugify} from '../utils/functions';
 
-const ARTIST_PAGES = ['who', 'why', 'how'];
-const ART_PAGES = ['apron', 'covid19india.org'];
-
-function List({heading, pages}) {
+function List({heading, pages, setPreviewUrl}) {
   return (
     <div className={styles.list}>
       <div className={styles.heading}>{heading}</div>
 
       <div className={styles.pages}>
-        {pages.map((page) => (
-          <Link href={`/${page}`}>
-            <a className={styles.page}>
-              <div className={styles.name}>{page}</div>
-              <div className={styles.description}>{page}</div>
-            </a>
-          </Link>
-        ))}
+        {pages.map((page) => {
+          const name = page.properties.name.title[0].plain_text;
+          const description =
+            page.properties.description.rich_text[0]?.plain_text;
+
+          return (
+            <Link href={`/${slugify(name)}`} key={name}>
+              <a
+                className={styles.page}
+                onMouseEnter={() => {
+                  setPreviewUrl(page.cover?.file?.url);
+                }}
+                onMouseLeave={() => {
+                  setPreviewUrl(null);
+                }}
+              >
+                <div className={styles.name}>{name}</div>
+                <div className={styles.description}>{description}</div>
+              </a>
+            </Link>
+          );
+        })}
       </div>
     </div>
   );
 }
 
-export default function Home() {
+export default function Home({data}) {
+  const [previewUrl, setPreviewUrl] = useState(null);
+
+  const pages = useMemo(() => {
+    const pagesDraft = {};
+
+    data.results.map((page) => {
+      if (Object.keys(pagesDraft).includes(page.properties.tags.select.name)) {
+        pagesDraft[page.properties.tags.select.name].push(page);
+      } else {
+        pagesDraft[page.properties.tags.select.name] = [page];
+      }
+    });
+
+    return pagesDraft;
+  }, [data]);
+
   return (
     <div className={styles.home}>
       <Head>
@@ -34,8 +64,37 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <List {...{heading: 'The Artist', pages: ARTIST_PAGES}} />
-      <List {...{heading: 'The Art', pages: ART_PAGES}} />
+      {Object.keys(pages).map((pageHeading) => (
+        <List
+          key={pageHeading}
+          {...{heading: pageHeading, pages: pages[pageHeading]}}
+          {...{setPreviewUrl}}
+        />
+      ))}
+
+      <div className={styles.preview}>
+        {previewUrl && (
+          <Image
+            className={styles.image}
+            src={previewUrl}
+            width={347}
+            height={261}
+            alt="thumbnail for said project"
+          />
+        )}
+      </div>
     </div>
   );
+}
+
+export async function getStaticProps() {
+  const res = await fetch('https://curiosity.vercel.app/api/pages');
+  const data = await res.json();
+
+  return {
+    props: {
+      data,
+    },
+    revalidate: 6 * 60 * 60,
+  };
 }

@@ -6,8 +6,13 @@ $modularscale: (
 );
 
 .home {
+  max-width: ms(18);
+  margin-left: auto;
+  margin-right: auto;
+
   .list {
     padding: ms(5);
+    padding-bottom: 0;
 
     .heading {
       text-transform: uppercase;
@@ -18,19 +23,20 @@ $modularscale: (
     }
 
     .pages {
-      width: calc(100vw - #{ms(5)}*2);
-
       .page {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         align-items: baseline;
-        margin-bottom: ms(-1);
+        margin-bottom: ms(-3);
 
         .name {
           font-size: ms(3);
           font-weight: 700;
           color: var(--gray-800);
+          padding: ms(-6) ms(-3);
+          border-radius: 4px;
+          margin-left: -#{ms(-3)};
         }
 
         .description {
@@ -38,7 +44,27 @@ $modularscale: (
           color: var(--gray-400);
           font-weight: 500;
         }
+
+        &:hover {
+          .name {
+            background: var(--gray-100);
+
+          }
+        }
       }
     }
+  }
+
+  .preview {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
   }
 }
