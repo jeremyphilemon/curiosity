@@ -80,6 +80,7 @@ export default function Home({data}) {
             width={347}
             height={261}
             alt="thumbnail for said project"
+            preload
           />
         )}
       </div>

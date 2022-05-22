@@ -50,6 +50,7 @@ function Page({data}) {
                 layout="intrinsic"
                 width="1024"
                 height="768"
+                priority
               />
               <div className={styles.caption}>{caption}</div>
             </div>
