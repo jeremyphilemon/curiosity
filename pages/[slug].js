@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import {useState} from 'react';
 import {DeviceCameraVideoIcon} from '@primer/octicons-react';
+import Link from 'next/link';
 import {slugify} from '../utils/functions';
 import styles from '../styles/page.module.scss';
 
@@ -24,13 +25,56 @@ function Video({block}) {
   );
 }
 
+function Paragraph({block}) {
+  return (
+    <div className={styles.paragraph}>
+      {block.paragraph.rich_text.map((rich_text_obj) => {
+        if (rich_text_obj.href) {
+          return (
+            <Link href={rich_text_obj.href}>
+              <a className={styles.link}>{rich_text_obj.text.content}</a>
+            </Link>
+          );
+        }
+
+        return (
+          <span key={rich_text_obj.text.content}>
+            {rich_text_obj.text.content}
+          </span>
+        );
+      })}
+    </div>
+  );
+}
+
+function BulletedListItem({block}) {
+  return (
+    <li className={styles.bulleted_list_item}>
+      {block.bulleted_list_item.rich_text.map((rich_text_obj) => {
+        if (rich_text_obj.href) {
+          return (
+            <Link href={rich_text_obj.href}>
+              <a className={styles.link}>{rich_text_obj.text.content}</a>
+            </Link>
+          );
+        }
+
+        return (
+          <span key={rich_text_obj.text.content}>
+            {rich_text_obj.text.content}
+          </span>
+        );
+      })}
+    </li>
+  );
+}
+
 function Page({data}) {
   return (
     <div className={styles.page}>
       {data.results.map((block) => {
         if (block.type === 'paragraph') {
-          const text = block.paragraph.rich_text[0]?.plain_text;
-          return <div className={styles.paragraph}>{text}</div>;
+          return <Paragraph {...{block}} />;
         }
 
         if (block.type === 'heading_3') {
@@ -64,6 +108,10 @@ function Page({data}) {
         if (block.type === 'quote') {
           const text = block.quote.rich_text[0]?.plain_text;
           return <div className={styles.quote}>{text}</div>;
+        }
+
+        if (block.type === 'bulleted_list_item') {
+          return <BulletedListItem {...{block}} />;
         }
 
         return null;
